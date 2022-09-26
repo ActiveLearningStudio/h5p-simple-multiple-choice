@@ -137,6 +137,11 @@ export default class SimpleMultiChoice extends H5P.EventDispatcher {
 
       let xApiTemplate = this.createXAPIEventTemplate('interacted');
       const xApiEvent = this.xapiGenerator.generateXApi(xApiTemplate, this.state);
+      if (this.activityStartTime) {
+        var duration = Math.round((Date.now() - this.activityStartTime ) / 10) / 100;
+        // xAPI spec allows a precision of 0.01 seconds
+        xApiEvent.data.statement.result.duration = 'PT' + duration + 'S';
+      }
       this.trigger(xApiEvent);
     };
 
